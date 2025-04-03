@@ -1,0 +1,2 @@
+# mcp-exercise
+llm mcp
