@@ -1,8 +1,15 @@
 from duckduckgo_search import DDGS
-from smolagents import load_tool, CodeAgent, HfApiModel, DuckDuckGoSearchTool
+from smolagents import (
+    load_tool,
+    CodeAgent,
+    HfApiModel,
+    DuckDuckGoSearchTool,
+    OpenAIServerModel,
+)
 from dotenv import load_dotenv
 from loguru import logger
 from pathlib import Path
+import os
 
 logger.add(
     Path(__file__).with_suffix(".log"), mode="w", encoding="utf-8", level="DEBUG"
@@ -19,10 +26,22 @@ def test_duckduck():
 
 search_tool = DuckDuckGoSearchTool()
 
+load_dotenv()
+API_KEY = os.environ["API_KEY"]
+LOCAL_MODEL_PATH = os.environ["LOCAL_MODEL_PATH"]
+BASE_URL = "https://ark.cn-beijing.volces.com/api/v3"
+logger.info(f"{LOCAL_MODEL_PATH = }")
+
+model = OpenAIServerModel(
+    model_id=LOCAL_MODEL_PATH,
+    api_base=BASE_URL,  # Leave this blank to query OpenAI servers.
+    api_key=API_KEY,  # Switch to the API key for the server you're targeting.
+)
+
 agent = CodeAgent(
     tools=[search_tool],
-    model=HfApiModel(model_id="Qwen/Qwen2.5-72B-Instruct"),
-    planning_interval=3,  # This is where you activate planning!
+    model=model,
+    # planning_interval=3,  # This is where you activate planning!
 )
 
 # Run it!
