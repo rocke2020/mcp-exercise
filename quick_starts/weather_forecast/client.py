@@ -26,7 +26,7 @@ pubme_server_parameters = StdioServerParameters(
     env={"UV_PYTHON": "3.12", **os.environ},
 )
 
-use_2_tools = False
+use_2_tools = 1
 if use_2_tools:
     # Load tools from MCP servers
     with ToolCollection.from_mcp(
@@ -38,8 +38,8 @@ if use_2_tools:
         # Create an agent with all tools
         agent = CodeAgent(tools=all_tools, model=model, add_base_tools=True)
         # Visualize agent behavior
-        agent.visualize()
-        print(agent.run("weather in Los Angeles"))
+        # agent.visualize()
+        # print(agent.run("weather in Los Angeles"))
         print(agent.run("pubmed search for covid"))
 else:
     # Load tools from a single MCP server
